@@ -1,0 +1,144 @@
+{
+  "info": {
+    "name": "Library Management System API - Authors ",
+    "description": "API test collection for Library Management System assignment (Authors Module)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:8080" }
+  ],
+  "item": [
+    {
+      "name": "Authors",
+      "item": [
+        {
+          "name": "Create Author",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/authors",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"firstName\": \"George\",\n  \"lastName\": \"Orwell\",\n  \"nationality\": \"British\",\n  \"birthDate\": \"1903-06-25\"\n}" }
+          }
+        },
+        {
+          "name": "Get All Authors",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/authors?page=0&size=10&sort=id&direction=asc", "host": ["{{baseUrl}}"], "path": ["api","authors"], "query": [{"key":"page","value":"0"},{"key":"size","value":"10"},{"key":"sort","value":"id"},{"key":"direction","value":"asc"}] }
+          }
+        },
+        {
+          "name": "Get Author By ID",
+          "request": { "method": "GET", "url": "{{baseUrl}}/api/authors/1" }
+        },
+        {
+          "name": "Update Author",
+          "request": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/api/authors/1",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"firstName\": \"George\",\n  \"lastName\": \"Orwell\",\n  \"nationality\": \"British\",\n  \"birthDate\": \"1903-06-25\"\n}" }
+          }
+        },
+        {
+          "name": "Delete Author",
+          "request": { "method": "DELETE", "url": "{{baseUrl}}/api/authors/1" }
+        },
+        {
+          "name": "Get Books By Author",
+          "request": { "method": "GET", "url": "{{baseUrl}}/api/authors/1/books" }
+        },
+        {
+          "name": "[Error] Create Author - Missing firstName",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/authors",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"lastName\": \"Orwell\"\n}" }
+          }
+        },
+        {
+          "name": "[Error] Get Author - Not Found",
+          "request": { "method": "GET", "url": "{{baseUrl}}/api/authors/999" }
+        }
+      ]
+    },
+    {
+      "name": "Books",
+      "item": [
+        {
+          "name": "Create Book",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/books",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"title\": \"1984\",\n  \"isbn\": \"978-0451524935\",\n  \"genre\": \"Dystopian\",\n  \"publishedYear\": 1949,\n  \"authorId\": 1\n}" }
+          }
+        },
+        {
+          "name": "Get All Books",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/books?page=0&size=10&sort=title&direction=asc", "host": ["{{baseUrl}}"], "path": ["api","books"], "query": [{"key":"page","value":"0"},{"key":"size","value":"10"},{"key":"sort","value":"title"},{"key":"direction","value":"asc"}] }
+          }
+        },
+        {
+          "name": "Get Book By ID",
+          "request": { "method": "GET", "url": "{{baseUrl}}/api/books/1" }
+        },
+        {
+          "name": "Search Books by Genre",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/books/search?genre=Dystopian", "host": ["{{baseUrl}}"], "path": ["api","books","search"], "query": [{"key":"genre","value":"Dystopian"}] }
+          }
+        },
+        {
+          "name": "Search Books by Title",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/books/search?title=1984", "host": ["{{baseUrl}}"], "path": ["api","books","search"], "query": [{"key":"title","value":"1984"}] }
+          }
+        },
+        {
+          "name": "Search Books by Year",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/books/search?publishedYear=1949", "host": ["{{baseUrl}}"], "path": ["api","books","search"], "query": [{"key":"publishedYear","value":"1949"}] }
+          }
+        },
+        {
+          "name": "Update Book",
+          "request": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/api/books/1",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"title\": \"Nineteen Eighty-Four\",\n  \"isbn\": \"978-0451524935\",\n  \"genre\": \"Dystopian\",\n  \"publishedYear\": 1949,\n  \"authorId\": 1\n}" }
+          }
+        },
+        {
+          "name": "Delete Book",
+          "request": { "method": "DELETE", "url": "{{baseUrl}}/api/books/1" }
+        },
+        {
+          "name": "[Error] Create Book - Duplicate ISBN",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/books",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"title\": \"Animal Farm\",\n  \"isbn\": \"978-0451524935\",\n  \"authorId\": 1\n}" }
+          }
+        },
+        {
+          "name": "[Error] Create Book - Author Not Found",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/books",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"title\": \"Test\",\n  \"isbn\": \"NEW-ISBN\",\n  \"authorId\": 999\n}" }
+          }
+        }
+      ]
+    }
+  ]
+}
