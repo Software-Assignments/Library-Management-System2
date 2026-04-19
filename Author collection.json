@@ -1,0 +1,67 @@
+{
+  "info": {
+    "name": "Library Management System API - Authors ",
+    "description": "API test collection for Library Management System assignment (Authors Module)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:8080" }
+  ],
+  "item": [
+    {
+      "name": "Authors",
+      "item": [
+        {
+          "name": "Create Author",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/authors",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"firstName\": \"George\",\n  \"lastName\": \"Orwell\",\n  \"nationality\": \"British\",\n  \"birthDate\": \"1903-06-25\"\n}" }
+          }
+        },
+        {
+          "name": "Get All Authors",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/authors?page=0&size=10&sort=id&direction=asc", "host": ["{{baseUrl}}"], "path": ["api","authors"], "query": [{"key":"page","value":"0"},{"key":"size","value":"10"},{"key":"sort","value":"id"},{"key":"direction","value":"asc"}] }
+          }
+        },
+        {
+          "name": "Get Author By ID",
+          "request": { "method": "GET", "url": "{{baseUrl}}/api/authors/1" }
+        },
+        {
+          "name": "Update Author",
+          "request": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/api/authors/1",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"firstName\": \"George\",\n  \"lastName\": \"Orwell\",\n  \"nationality\": \"British\",\n  \"birthDate\": \"1903-06-25\"\n}" }
+          }
+        },
+        {
+          "name": "Delete Author",
+          "request": { "method": "DELETE", "url": "{{baseUrl}}/api/authors/1" }
+        },
+        {
+          "name": "Get Books By Author",
+          "request": { "method": "GET", "url": "{{baseUrl}}/api/authors/1/books" }
+        },
+        {
+          "name": "[Error] Create Author - Missing firstName",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/authors",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"lastName\": \"Orwell\"\n}" }
+          }
+        },
+        {
+          "name": "[Error] Get Author - Not Found",
+          "request": { "method": "GET", "url": "{{baseUrl}}/api/authors/999" }
+        }
+      ]
+    }
+  ]
+}

@@ -1,9 +1,11 @@
 # Group Information
 
-**Group Number:** [Your Group Number Here]
+**Group Number:** 3
 
 **Members:**
-1. [Member 1 Full Name]
-2. [Member 2 Full Name]
-3. [Member 3 Full Name]
-4. [Member 4 Full Name]
+1. Amira ElSayed 
+2. Alaa Khaled
+3. Mariam Sherif
+4. Sarah Sameh
+5. Farida Hesham
+
