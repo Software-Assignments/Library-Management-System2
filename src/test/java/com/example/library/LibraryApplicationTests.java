@@ -2,6 +2,7 @@ package com.example.library;
 
 import com.example.library.dto.request.AuthorRequest;
 import com.example.library.dto.request.BookRequest;
+import com.example.library.dto.request.MemberRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -275,5 +276,83 @@ class LibraryApplicationTests {
         mockMvc.perform(delete("/api/books/1")).andExpect(status().isNoContent());
         mockMvc.perform(get("/api/books/1")).andExpect(status().isNotFound());
     }
+    @Test @Order(16)
+    @DisplayName("POST /api/members - Register member successfully")
+    void createMember_success() throws Exception {
+        MemberRequest req = MemberRequest.builder()
+                .firstName("Jane").lastName("Doe").email("jane@example.com").phoneNumber("01012345678").build();
+
+        mockMvc.perform(post("/api/members")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(req)))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.email").value("jane@example.com"))
+                .andExpect(jsonPath("$.membershipDate").isNotEmpty());
+    }
+
+    @Test @Order(17)
+    @DisplayName("POST /api/members - Fail on duplicate email")
+    void createMember_duplicateEmail() throws Exception {
+        MemberRequest req = MemberRequest.builder()
+                .firstName("Jane").lastName("Doe").email("duplicate@example.com").build();
+        mockMvc.perform(post("/api/members").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(req)));
+
+        MemberRequest req2 = MemberRequest.builder()
+                .firstName("John").lastName("Smith").email("duplicate@example.com").build();
+        mockMvc.perform(post("/api/members")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(req2)))
+                .andExpect(status().isConflict());
+    }
+
+    @Test @Order(18)
+    @DisplayName("POST /api/members - Fail on invalid email format")
+    void createMember_invalidEmail() throws Exception {
+        MemberRequest req = MemberRequest.builder()
+                .firstName("Jane").lastName("Doe").email("not-an-email").build();
+        mockMvc.perform(post("/api/members")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(req)))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test @Order(19)
+    @DisplayName("GET /api/members/search - Search by name")
+    void searchMembersByName() throws Exception {
+        MemberRequest r1 = MemberRequest.builder().firstName("Alice").lastName("Smith").email("alice@test.com").build();
+        MemberRequest r2 = MemberRequest.builder().firstName("Bob").lastName("Jones").email("bob@test.com").build();
+        mockMvc.perform(post("/api/members").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(r1)));
+        mockMvc.perform(post("/api/members").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(r2)));
+
+        mockMvc.perform(get("/api/members/search").param("name", "alice"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)))
+                .andExpect(jsonPath("$[0].firstName").value("Alice"));
+    }
+
+    @Test @Order(20)
+    @DisplayName("PUT /api/members/{id} - Update member")
+    void updateMember() throws Exception {
+        MemberRequest create = MemberRequest.builder().firstName("Old").lastName("Name").email("old@test.com").build();
+        mockMvc.perform(post("/api/members").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(create)));
+
+        MemberRequest update = MemberRequest.builder().firstName("New").lastName("Name").email("new@test.com").build();
+        mockMvc.perform(put("/api/members/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(update)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.email").value("new@test.com"));
+    }
+
+    @Test @Order(21)
+    @DisplayName("DELETE /api/members/{id} - Delete member")
+    void deleteMember() throws Exception {
+        MemberRequest req = MemberRequest.builder().firstName("Del").lastName("User").email("del@test.com").build();
+        mockMvc.perform(post("/api/members").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(req)));
+
+        mockMvc.perform(delete("/api/members/1")).andExpect(status().isNoContent());
+        mockMvc.perform(get("/api/members/1")).andExpect(status().isNotFound());
+    }
+
 
 }

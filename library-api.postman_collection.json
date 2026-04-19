@@ -1,7 +1,7 @@
 {
   "info": {
-    "name": "Library Management System API - Authors ",
-    "description": "API test collection for Library Management System assignment (Authors Module)",
+    "name": "Library Management System API",
+    "description": "API test collection for Library Management System assignment (Authors, Books, Members)",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "variable": [
@@ -137,6 +137,82 @@
             "header": [{ "key": "Content-Type", "value": "application/json" }],
             "body": { "mode": "raw", "raw": "{\n  \"title\": \"Test\",\n  \"isbn\": \"NEW-ISBN\",\n  \"authorId\": 999\n}" }
           }
+        }
+      ]
+    },
+    {
+      "name": "Members",
+      "item": [
+        {
+          "name": "Register Member",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/members",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"firstName\": \"Jane\",\n  \"lastName\": \"Doe\",\n  \"email\": \"jane@example.com\",\n  \"phoneNumber\": \"01012345678\"\n}" }
+          }
+        },
+        {
+          "name": "Get All Members",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/members?page=0&size=10", "host": ["{{baseUrl}}"], "path": ["api","members"], "query": [{"key":"page","value":"0"},{"key":"size","value":"10"}] }
+          }
+        },
+        {
+          "name": "Get Member By ID",
+          "request": { "method": "GET", "url": "{{baseUrl}}/api/members/1" }
+        },
+        {
+          "name": "Search Members by Name",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/members/search?name=alice", "host": ["{{baseUrl}}"], "path": ["api","members","search"], "query": [{"key":"name","value":"alice"}] }
+          }
+        },
+        {
+          "name": "Update Member",
+          "request": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/api/members/1",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"firstName\": \"New\",\n  \"lastName\": \"Name\",\n  \"email\": \"new@test.com\",\n  \"phoneNumber\": \"01099999999\"\n}" }
+          }
+        },
+        {
+          "name": "Delete Member",
+          "request": { "method": "DELETE", "url": "{{baseUrl}}/api/members/1" }
+        },
+        {
+          "name": "[Error] Register Member - Duplicate Email",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/members",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"firstName\": \"John\",\n  \"lastName\": \"Smith\",\n  \"email\": \"jane@example.com\"\n}" }
+          }
+        },
+        {
+          "name": "[Error] Register Member - Invalid Email Format",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/members",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"firstName\": \"Jane\",\n  \"lastName\": \"Doe\",\n  \"email\": \"not-an-email\"\n}" }
+          }
+        },
+        {
+          "name": "[Error] Register Member - Missing Required Fields",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/members",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"firstName\": \"Jane\"\n}" }
+          }
+        },
+        {
+          "name": "[Error] Get Member - Not Found",
+          "request": { "method": "GET", "url": "{{baseUrl}}/api/members/999" }
         }
       ]
     }
