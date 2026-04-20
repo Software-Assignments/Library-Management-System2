@@ -3,6 +3,10 @@ package com.example.library.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
+
 @Entity
 @Table(name = "books")
 @Getter
@@ -29,5 +33,8 @@ public class Book {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "author_id", nullable = false)
     private Author author;
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @Builder.Default
+    private List<BorrowRecord> borrowRecords = new ArrayList<>();
 
 }

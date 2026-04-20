@@ -9,11 +9,13 @@ import org.mapstruct.*;
 public interface BookMapper {
 
     @Mapping(target = "author", ignore = true)
+    @Mapping(target = "borrowRecords", ignore = true)
     Book toEntity(BookRequest request);
 
     BookResponse toResponse(Book book);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     @Mapping(target = "author", ignore = true)
+    @Mapping(target = "borrowRecords", ignore = true)
     void updateFromRequest(BookRequest request, @MappingTarget Book book);
 }
