@@ -15,7 +15,9 @@ import java.util.Optional;
 public interface BookRepository extends JpaRepository<Book, Long> {
 
     // JOIN FETCH solves N+1: loads all books + authors in ONE query
-    @Query("SELECT b FROM Book b JOIN FETCH b.author")
+    // countQuery is required to avoid HHH90003004 in-memory pagination warning
+    @Query(value = "SELECT b FROM Book b JOIN FETCH b.author",
+           countQuery = "SELECT COUNT(b) FROM Book b")
     Page<Book> findAllWithAuthor(Pageable pageable);
 
     @Query("SELECT b FROM Book b JOIN FETCH b.author WHERE b.id = :id")

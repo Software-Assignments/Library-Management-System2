@@ -5,7 +5,7 @@ import com.example.library.dto.response.BorrowRecordResponseDto;
 import com.example.library.entity.Book;
 import com.example.library.entity.BorrowRecord;
 import com.example.library.entity.Member;
-import com.example.library.exception.DuplicateResourceException;
+import com.example.library.exception.BookAlreadyBorrowedException;
 import com.example.library.exception.ResourceNotFoundException;
 import com.example.library.mapper.BorrowRecordMapper;
 import com.example.library.repository.BookRepository;
@@ -37,8 +37,7 @@ public class BorrowRecordService {
 
         borrowRecordRepository.findByBookIdAndReturnDateIsNull(dto.getBookId())
                 .ifPresent(r -> {
-                    throw new DuplicateResourceException(
-                            "Book with id " + dto.getBookId() + " is already borrowed and has not been returned.");
+                    throw new BookAlreadyBorrowedException(dto.getBookId());
                 });
 
         BorrowRecord record = BorrowRecord.builder()

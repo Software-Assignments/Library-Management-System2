@@ -12,31 +12,34 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/borrow-records")
 @RequiredArgsConstructor
 public class BorrowRecordController {
 
     private final BorrowRecordService borrowRecordService;
 
-    @PostMapping
+    @PostMapping("/api/borrow-records")
     public ResponseEntity<BorrowRecordResponseDto> borrowBook(
             @Valid @RequestBody BorrowRecordRequestDto dto) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(borrowRecordService.borrowBook(dto));
     }
 
-    @PutMapping("/{id}/return")
+    @PutMapping("/api/borrow-records/{id}/return")
     public ResponseEntity<BorrowRecordResponseDto> returnBook(@PathVariable Long id) {
         return ResponseEntity.ok(borrowRecordService.returnBook(id));
     }
 
-    @GetMapping({"/member/{memberId}", "/members/{memberId}"})
+    // Handles both /api/borrow-records/member/{memberId} and
+    // /api/borrowrecords/member/{memberId} (spec uses no-hyphen variant)
+    @GetMapping({"/api/borrow-records/member/{memberId}",
+                 "/api/borrowrecords/member/{memberId}",
+                 "/api/borrow-records/members/{memberId}"})
     public ResponseEntity<List<BorrowRecordResponseDto>> getRecordsByMember(
             @PathVariable Long memberId) {
         return ResponseEntity.ok(borrowRecordService.getRecordsByMember(memberId));
     }
 
-    @GetMapping("/active")
+    @GetMapping("/api/borrow-records/active")
     public ResponseEntity<List<BorrowRecordResponseDto>> getActiveRecords() {
         return ResponseEntity.ok(borrowRecordService.getActiveRecords());
     }

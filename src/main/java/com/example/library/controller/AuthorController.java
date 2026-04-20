@@ -4,6 +4,7 @@ import com.example.library.dto.request.AuthorRequest;
 import com.example.library.dto.response.AuthorResponse;
 import com.example.library.dto.response.BookResponse;
 import com.example.library.service.AuthorService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -31,12 +32,12 @@ public class AuthorController {
     }
 
     @PostMapping
-    public ResponseEntity<AuthorResponse> createAuthor(@RequestBody AuthorRequest request) {
+    public ResponseEntity<AuthorResponse> createAuthor(@Valid @RequestBody AuthorRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(authorService.create(request));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<AuthorResponse> updateAuthor(@PathVariable Long id, @RequestBody AuthorRequest request) {
+    public ResponseEntity<AuthorResponse> updateAuthor(@PathVariable Long id, @Valid @RequestBody AuthorRequest request) {
         return ResponseEntity.ok(authorService.update(id, request));
     }
 

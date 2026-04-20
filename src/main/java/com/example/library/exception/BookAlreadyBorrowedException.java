@@ -1,7 +1,7 @@
 package com.example.library.exception;
 
 public class BookAlreadyBorrowedException extends RuntimeException {
-    public BookAlreadyBorrowedException(String message) {
-        super(message);
+    public BookAlreadyBorrowedException(Long bookId) {
+        super("Book with id " + bookId + " is already borrowed and has not been returned.");
     }
 }
