@@ -215,6 +215,75 @@
           "request": { "method": "GET", "url": "{{baseUrl}}/api/members/999" }
         }
       ]
+    },
+    {
+      "name": "Borrow Records",
+      "item": [
+        {
+          "name": "Borrow a Book",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/borrow-records",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"bookId\": 1,\n  \"memberId\": 1\n}" }
+          }
+        },
+        {
+          "name": "Return a Book",
+          "request": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/api/borrow-records/1/return",
+            "header": [{ "key": "Content-Type", "value": "application/json" }]
+          }
+        },
+        {
+          "name": "Get Records by Member",
+          "request": { "method": "GET", "url": "{{baseUrl}}/api/borrow-records/member/1" }
+        },
+        {
+          "name": "Get Active Records",
+          "request": { "method": "GET", "url": "{{baseUrl}}/api/borrow-records/active" }
+        },
+        {
+          "name": "[Error] Borrow Already-Borrowed Book",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/borrow-records",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"bookId\": 1,\n  \"memberId\": 1\n}" }
+          }
+        },
+        {
+          "name": "[Error] Return Already-Returned Record",
+          "request": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/api/borrow-records/1/return",
+            "header": [{ "key": "Content-Type", "value": "application/json" }]
+          }
+        },
+        {
+          "name": "[Error] Borrow - Book Not Found",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/borrow-records",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"bookId\": 999,\n  \"memberId\": 1\n}" }
+          }
+        },
+        {
+          "name": "[Error] Borrow - Member Not Found",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/borrow-records",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"bookId\": 1,\n  \"memberId\": 999\n}" }
+          }
+        },
+        {
+          "name": "[Error] Get Records - Member Not Found",
+          "request": { "method": "GET", "url": "{{baseUrl}}/api/borrow-records/member/999" }
+        }
+      ]
     }
   ]
 }
